@@ -1,7 +1,16 @@
-# initial service
+## Usage
+
+### Start development
 ```
-- window.MSWidgets.'name_service'(Object);
+npm start
+```
 
-- Object.data('ms.'name_service').reinitialize()
+### Build development
+```
+npm build:dev
+```
 
+### Build production
+```
+npm build
 ```

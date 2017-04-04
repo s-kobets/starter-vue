@@ -39,11 +39,7 @@ if (!isDev) {
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': '"production"'
 		}),
-		new UglifyJSPlugin({
-			compress: {
-				drop_console: true  //убрать сonsole.log
-			}
-		}),
+		new UglifyJSPlugin(),
 		new webpack.optimize.AggressiveMergingPlugin()
 	]);
 }

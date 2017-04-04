@@ -5,8 +5,6 @@
     "build": "NODE_ENV=production webpack",
     "build:dev": "NODE_ENV=development webpack",
     "start": "webpack-dev-server",
-    "test": "ava modules/*/static_src/test/test-*.js",
-    "tdd": "npm run test -- --watch"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.3",
