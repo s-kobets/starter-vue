@@ -1,11 +1,11 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const postCssConfig = require('./postcss.config');
 
 // ENV: 'dev', 'dist'
 const ENV = {
@@ -29,7 +29,7 @@ let plugins = [
 	}),
 	new ExtractTextPlugin({
 		filename: '[name].css',
-		allChunks: true 
+		allChunks: true
 	})
 ];
 
@@ -46,7 +46,7 @@ if (!isDev) {
 
 module.exports = {
 	entry: {
-		main : './static_src/js/main.js'
+		main: './static_src/js/main.js'
 	},
 	output: {
 		path: path.join(__dirname, 'static'),
@@ -67,7 +67,7 @@ module.exports = {
 					options: {
 						configFile: path.join(__dirname, '.eslintrc'),
 						rules: {semi: 0}
-					},
+					}
 				}],
 				enforce: 'pre',
 				exclude: /(node_modules)/
@@ -77,7 +77,7 @@ module.exports = {
 				test: /\.css$/,
 				use: ExtractTextPlugin.extract({
 					fallback: [
-						{   loader: 'style-loader',
+						{loader: 'style-loader',
 					    	options: {
 					      		modules: true
 					    	}
@@ -86,40 +86,18 @@ module.exports = {
 	                use: [
 		                'css-loader',
 		                {
-							loader: 'postcss-loader',
-							options: {
-								plugins: function () {
-									const cssDir = path.dirname(this.resource).split(path.sep);
-									const widgetName = cssDir[cssDir.length - 3];
-
-									if (isDev) {
-										return [
-											// postcss-import for webpack watch
-											require('postcss-import')(),
-											require('precss')(),
-											require('postcss-initial')(),
-											require('postcss-assets')(),
-											require('autoprefixer')({browsers: ['last 2 versions', 'ie >= 11'], cascade: false})
-										];
-									}
-									return [
-										require('precss')(),
-										require('postcss-initial')(),
-										require('postcss-assets')(),
-										require('autoprefixer')({browsers: ['last 2 versions', 'ie >= 11'], cascade: false}),
-										// Minimize CSS build
-										require('postcss-csso')()
-									];
-								}
-							}
-						}
+			loader: 'postcss-loader',
+			options: {
+				postcss: postCssConfig
+			}
+		}
 	                ]
 	            })
 			},
 			// Copy images
 			{
 				test: /\.(png|jpg|gif|svg)/,
-				loader: "file-loader?name=[hash:6].[ext]"
+				loader: 'file-loader?name=[hash:6].[ext]'
 			},
 			// Copy fonts
 			{
@@ -135,7 +113,7 @@ module.exports = {
 		modules: ['./static_src', './node_modules'],
 		alias: {
 			node_modules: path.join(__dirname, 'node_modules'),
-			'vue$': 'vue/dist/vue.common.js'
+			vue$: 'vue/dist/vue.common.js'
 		}
 	}
 };
